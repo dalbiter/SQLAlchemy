@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>All Pets</title>
+</head>
+<body>
+    <h1>All Pets</h1>
+    <p>
+        {% for pet in pets %}
+        <li>
+            <a href="/{{pet.id}}">{{pet.name}}</a>
+        </li>
+        {% endfor %}
+    </p>    
+</body>
+</html>
