@@ -25,10 +25,30 @@ def show_home():
     pets = Pet.query.all()
     return render_template('list.html', pets=pets)
 
+@app.route('/', methods=['POST'])
+def add_pet():
+    """takes form data and creates a new Pet instance"""
+
+    name = request.form['name']
+    species = request.form['species']
+    hunger = request.form['hunger']
+    hunger = int(hunger) if hunger else None
+
+    new_pet = Pet(name=name, species=species, hunger=hunger)
+    db.session.add(new_pet)
+    db.session.commit()                
+    return redirect(f'/{new_pet.id}')
+
 @app.route('/<int:pet_id>')
 def show_pet(pet_id):
     """show details about a single pet"""
 
     pet = Pet.query.get_or_404(pet_id)
+    return render_template('details.html', pet=pet) 
 
-    return render_template('details.html', pet=pet)    
+@app.route('/species/<species_id>')
+def show_pets_by_species(species_id):
+    """Gets a list of pets by species"""
+
+    pets = Pet.get_by_species(species_id)
+    return render_template('species.html', pets=pets, species=species_id)
